@@ -9,7 +9,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
     "axios": "^1.13.5",
@@ -23,5 +22,7 @@
     "path": "^0.12.7",
     "sharp": "^0.34.5",
     "tesseract.js": "^7.0.0"
-  }
+  },
+  "devDependencies": {},
+  "description": ""
 }

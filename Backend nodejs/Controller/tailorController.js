@@ -6,7 +6,7 @@ var {genAi} = require("../Config/genai")
 
 cloudinary.config({
    cloud_name: process.env.CLOUD_NAME,
-    api_key: process.process.API_KEY,
+    api_key: process.API_KEY,
     api_secret: process.env.API_SECRET
 });
 
