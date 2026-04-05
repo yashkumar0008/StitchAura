@@ -1,5 +1,5 @@
 {
-  "name": "backend-nodejs",
+  "name": "backend_nodejs",
   "version": "1.0.0",
   "main": "servermvc.js",
   "scripts": {
