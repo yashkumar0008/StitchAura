@@ -26,5 +26,9 @@ app.use("/customer",customerRouter);
 app.use("/tailor",tailorRouter);
 app.use("/review",reviewRouter);
 
+app.use((req,res) => {
+    res.status(404).send("Invalid URL");
+});
+
 
 module.exports=app;
