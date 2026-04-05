@@ -26,9 +26,5 @@ app.use("/customer",customerRouter);
 app.use("/tailor",tailorRouter);
 app.use("/review",reviewRouter);
 
-const PORT = process.env.PORT;
-app.listen(PORT,()=>{
-    console.log(`Server Started at ${PORT}`);
-})
 
 module.exports=app;
