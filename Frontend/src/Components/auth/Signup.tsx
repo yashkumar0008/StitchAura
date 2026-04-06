@@ -53,7 +53,7 @@ export default function Signup() {
     if (!validate()) return;
 
     try {
-      let url = "http://localhost:2007/user/signupaxios";
+      let url = "https://stitch-aura.vercel.app/user/signupaxios";
 
       let response = await axios.post(url, form, { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
       alert(response.data.msg)
