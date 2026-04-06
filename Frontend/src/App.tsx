@@ -14,8 +14,8 @@ import CustomerProfile from "./Components/Customer/CustomerProfile";
 import FindTailor from "./Components/Customer/FindTailor";
 import RateAndReview from "./Components/Customer/RateAndReview";
 
-import CategoryDressFilter from "./Components/Customer/CategoryDressFilter";
-import ShowCity from "./Components/Customer/ShowCityComponent";
+// import CategoryDressFilter from "./Components/Customer/CategoryDressFilter";
+// import ShowCity from "./Components/Customer/ShowCityComponent";
 
 
 {/*  Tailor  */}

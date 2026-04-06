@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { FaUser, FaSearch, FaStar, FaSignOutAlt } from "react-icons/fa";
+import { FaUser, FaSignOutAlt } from "react-icons/fa";
 
 export default function TailorDashboard() {
   const navigate = useNavigate();
