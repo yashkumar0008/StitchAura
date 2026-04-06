@@ -3,7 +3,7 @@ require('dotenv').config();
 var fileuploader = require("express-fileupload");
 var cors = require("cors");
 
-var {connectToMongoDB}=require("./Config/dbConnect");
+var {connectToMongoDB}=require("./Config/DbConnect");
 
 var userRouter = require("./Router/UserRouter");
 var customerRouter = require("./Router/customerRouter");
