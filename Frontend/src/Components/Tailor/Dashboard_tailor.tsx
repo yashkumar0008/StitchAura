@@ -9,7 +9,7 @@ export default function TailorDashboard() {
       
       {/* Icon */}
       <div className="flex justify-center mb-4">
-        <div className="p-3 rounded-full bg-gradient-to-r from-indigo-500 to-purple-600">
+        <div className="p-3 rounded-full bg-linear-to-r from-indigo-500 to-purple-600">
           <Icon className="text-white w-6 h-6" />
         </div>
       </div>
@@ -23,7 +23,7 @@ export default function TailorDashboard() {
       <div className="flex justify-center">
         <button
           onClick={onClick}
-          className="px-6 py-2 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-medium shadow-md hover:opacity-90 transition"
+          className="px-6 py-2 rounded-xl bg-linear-to-r from-indigo-500 to-purple-600 text-white font-medium shadow-md hover:opacity-90 transition"
         >
           {button}
         </button>
@@ -32,7 +32,7 @@ export default function TailorDashboard() {
   );
 
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-gray-950 via-gray-900 to-black text-white flex flex-col items-center justify-center px-4 py-10">
+    <div className="min-h-screen w-full bg-linear-to-br from-gray-950 via-gray-900 to-black text-white flex flex-col items-center justify-center px-4 py-10">
       
       {/* Heading */}
       <h1 className="text-2xl sm:text-3xl font-bold mb-10 tracking-wide text-center">
