@@ -18,7 +18,7 @@ export default function VerifyOtp() {
 
   const handleVerify = async () => {
     try {
-      let res = await axios.post("http://localhost:2007/user/verify-otp", {
+      let res = await axios.post("https://stitch-aura.vercel.app/user/verify-otp", {
         emailid: email,
         otp: otp,
       });

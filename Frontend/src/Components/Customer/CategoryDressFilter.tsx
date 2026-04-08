@@ -18,7 +18,7 @@ export default function ShowCategoryDress({ onSelectDress }: ShowCategoryDressPr
 
             try {
                 const res = await axios.get(
-                    "http://localhost:2007/tailor/category-dress",
+                    "https://stitch-aura.vercel.app/tailor/category-dress",
                     { params: { category } }
                 );
 

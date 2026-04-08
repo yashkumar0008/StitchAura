@@ -12,7 +12,7 @@ export default function ShowCity({ value, onChange }: ShowCityProps) {
   useEffect(() => {
     async function fetchCities() {
       const res = await axios.post(
-        "http://localhost:2007/tailor/distinct-city"
+        "https://stitch-aura.vercel.app/tailor/distinct-city"
       );
       setCities(res.data);
     }
