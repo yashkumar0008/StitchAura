@@ -4,7 +4,8 @@ var app=require("express");
 var router=app.Router();
 
 
-router.post("/signupaxios",userController.doSignup);
-router.post("/loginaxios",userController.doLogin);
+router.post("/signup",userController.doSignup);
+router.post("/login",userController.doLogin);
+router.post("/verify-otp", userController.verifyOtp);
 
 module.exports=router;

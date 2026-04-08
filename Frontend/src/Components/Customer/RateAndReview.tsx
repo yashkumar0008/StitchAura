@@ -39,7 +39,7 @@ export default function RateAndReview() {
             setLoading(true);
 
             const resp = await axios.post(
-                "https://stitch-aura.vercel.app/tailor/findtailorbymobile",
+                "http://localhost:2007/tailor/findtailorbymobile",
                 { mobile: form.mobile }
             );
 
@@ -74,7 +74,7 @@ export default function RateAndReview() {
         }
 
         const resp = await axios.post(
-            "https://stitch-aura.vercel.app/review/addreview",
+            "http://localhost:2007/review/addreview",
             form
         );
 

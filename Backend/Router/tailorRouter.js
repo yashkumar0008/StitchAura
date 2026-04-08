@@ -11,5 +11,6 @@ router.post("/findtailorbymobile",tailorController.doFindTailorByMobile);
 router.post("/distinct-city",tailorController.doFetchCity);
 router.get("/category-dress",tailorController.doFetchCategoryDress);
 router.post("/tailor-data",tailorController.doFetchTailorData);
+router.post("/extractAadhar", tailorController.extractAadhar);
 
 module.exports=router;

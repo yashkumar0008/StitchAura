@@ -28,23 +28,23 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      let url = "https://stitch-aura.vercel.app/user/loginaxios";
+      let url = "http://localhost:2007/user/login";
 
       let response = await axios.post(url, form, { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
 
-      let jwt=response.data.token;
-    localStorage.setItem("token",jwt);
+      let jwt = response.data.token;
+      localStorage.setItem("token", jwt);
 
-      const role= response.data.usertype;
+      const role = response.data.usertype;
 
-        if (role === "customer") {
-      navigate("/customer-dashboard");
-    } else if (role === "tailor") {
-      navigate("/tailor-dashboard");
-    }
-    else{
-      setError(response.data.msg);
-    }
+      if (role === "customer") {
+        navigate("/customer-dashboard");
+      } else if (role === "tailor") {
+        navigate("/tailor-dashboard");
+      }
+      else {
+        setError(response.data.msg);
+      }
 
     } catch (err: any) {
       setError(err.response?.data?.msg || "Login Failed");
@@ -58,7 +58,7 @@ export default function Login() {
 
   return (
     <main className="min-h-screen flex items-center justify-center 
-bg-gradient-to-br from-slate-900 via-black to-slate-800 px-4">
+bg-linear-to-br from-slate-900 via-black to-slate-800 px-4">
 
       <form
         onSubmit={handleLogin}
@@ -121,7 +121,7 @@ bg-gradient-to-br from-slate-900 via-black to-slate-800 px-4">
         <button
           type="submit"
           className="mt-6 w-full rounded-lg 
-      bg-gradient-to-r from-yellow-500 to-amber-600 
+      bg-linear-to-r from-yellow-500 to-amber-600 
       py-2.5 font-semibold text-black 
       transition duration-300 
       hover:scale-[1.02] hover:shadow-lg hover:shadow-yellow-500/30"

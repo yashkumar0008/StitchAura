@@ -49,13 +49,14 @@ export default function ProfileTailor() {
     const [aadharFrontPrev, setAadharFrontPrev] = useState<string | null>(null);
     const [aadharBackPrev, setAadharBackPrev] = useState<string | null>(null);
     const [isExisting, setIsExisting] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
     }
 
-    function handleFile(
+    async function handleFile(
         e: React.ChangeEvent<HTMLInputElement>,
         field: "profilepic" | "aadharFront" | "aadharBack",
         setPrev: (v: string) => void
@@ -65,6 +66,29 @@ export default function ProfileTailor() {
 
         setForm((prev) => ({ ...prev, [field]: file }));
         setPrev(URL.createObjectURL(file));
+
+        // ----- Auto-extract data for Aadhaar -----
+        if (field === "aadharFront" || field === "aadharBack") {
+            const formData = new FormData();
+            formData.append("file", file);
+
+            try {
+                 setLoading(true);
+                const response = await axios.post(
+                    `http://localhost:2007/tailor/extractAadhar?side=${field}`,
+                    formData,
+                    { headers: { "Content-Type": "multipart/form-data" } }
+                );
+
+                // Fill form fields
+                setForm(prev => ({ ...prev, ...response.data }));
+            } catch (err) {
+                console.error("Aadhaar extraction failed:", err);
+            } finally {
+            setLoading(false);
+        }
+        }
+
     }
 
 
@@ -72,7 +96,7 @@ export default function ProfileTailor() {
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
-        let url = isExisting ? "https://stitch-aura.vercel.app/tailor/updatetailoraxios" : "https://stitch-aura.vercel.app/tailor/profileaxios";
+        let url = isExisting ? "http://localhost:2007/tailor/updatetailoraxios" : "http://localhost:2007/tailor/profileaxios";
 
         let formData = new FormData();
 
@@ -126,7 +150,7 @@ export default function ProfileTailor() {
 
     async function autoFindTailor() {
         try {
-            let url = "https://stitch-aura.vercel.app/tailor/findtailoraxios";
+            let url = "http://localhost:2007/tailor/findtailoraxios";
 
             let resp = await axios.post(url, { emailid: form.emailid }, { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
 
@@ -181,6 +205,13 @@ export default function ProfileTailor() {
                     Profile Tailor
                 </h2>
 
+                {loading && (
+                    <div className="fixed inset-0 bg-black/60 flex flex-col justify-center items-center z-50">
+                        <div className="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
+                        <p className="text-white mt-4 text-lg">Extracting Aadhaar Data...</p>
+                    </div>
+                )}
+
                 <div className="grid md:grid-cols-3 gap-6 mb-8">
 
                     {/* LEFT SIDE */}
@@ -232,7 +263,7 @@ export default function ProfileTailor() {
 
                         <label
                             htmlFor="profile"
-                            className="mt-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-6 py-2 rounded-xl cursor-pointer transition-all duration-300 shadow-lg shadow-indigo-900/40"
+                            className="mt-3 bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-6 py-2 rounded-xl cursor-pointer transition-all duration-300 shadow-lg shadow-indigo-900/40"
                         >
                             Upload
                         </label>
@@ -241,11 +272,11 @@ export default function ProfileTailor() {
                 </div>
 
                 {/* LEFT SIDE */}
-                <div className="grid md:grid-cols-3 gap-6 mb-8">
+                <div className="grid md:grid-cols-2 gap-6 mb-8">
 
                     {/* AADHAR UPLOAD front side */}
                     <div className="flex flex-col items-center">
-                        <label className="text-sm font-medium text-slate-300">Upload Aadhaar Card</label>
+                        <label className="text-sm font-medium text-slate-300">Upload Front Side Aadhaar Card</label>
 
                         <div className="w-45 h-36 rounded-2xl border border-slate-700 flex justify-center items-center overflow-hidden bg-slate-800 text-slate-500 mt-2">
                             {aadharFrontPrev ? (
@@ -259,12 +290,12 @@ export default function ProfileTailor() {
                             type="file"
                             hidden
                             id="aadharFront"
-                           onChange={(e) => handleFile(e, "aadharFront", setAadharFrontPrev)}
+                            onChange={(e) => handleFile(e, "aadharFront", setAadharFrontPrev)}
                         />
 
                         <label
                             htmlFor="aadharFront"
-                            className="mt-3 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-6 py-2 rounded-xl cursor-pointer transition-all duration-300 shadow-lg shadow-indigo-900/40"
+                            className="mt-3 bg-linear-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white px-6 py-2 rounded-xl cursor-pointer transition-all duration-300 shadow-lg shadow-indigo-900/40"
                         >
                             Upload Aadhaar
                         </label>
@@ -272,7 +303,7 @@ export default function ProfileTailor() {
 
                     {/* AADHAR UPLOAD back side */}
                     <div className="flex flex-col items-center">
-                        <label className="text-sm font-medium text-slate-300">Upload Aadhaar Card</label>
+                        <label className="text-sm font-medium text-slate-300">Upload Back Side Aadhaar Card</label>
 
                         <div className="w-45 h-36 rounded-2xl border border-slate-700 flex justify-center items-center overflow-hidden bg-slate-800 text-slate-500 mt-2">
                             {aadharBackPrev ? (
@@ -286,7 +317,7 @@ export default function ProfileTailor() {
                             type="file"
                             hidden
                             id="aadharBack"
-                           onChange={(e) => handleFile(e, "aadharBack", setAadharBackPrev)}
+                            onChange={(e) => handleFile(e, "aadharBack", setAadharBackPrev)}
                         />
 
                         <label

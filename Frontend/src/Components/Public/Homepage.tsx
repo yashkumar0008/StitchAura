@@ -93,11 +93,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="px-6 py-10 border-t border-slate-700 text-center text-slate-500">
-        © 2026 Tailor Finder. Crafted with precision ✂️
-      </footer>
-
     </div>
   );
 }

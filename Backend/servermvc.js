@@ -33,4 +33,4 @@ app.use((req,res) => {
 app.get('/', (req, res) => res.json({ message: 'invalid url' }));
 
 const PORT = process.env.PORT || 2007;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on ${PORT}`));

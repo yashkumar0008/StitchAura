@@ -2,11 +2,11 @@ var path = require("path");
 var cloudinary = require("cloudinary").v2;
 var UserColRef = require("../Models/tailorProfileModel");
 
-var {genAi} = require("../Config/genai")
+var { safeGenAi } = require("../Config/genai")
 
 cloudinary.config({
-   cloud_name: process.env.CLOUD_NAME,
-    api_key: process.API_KEY,
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
     api_secret: process.env.API_SECRET
 });
 
@@ -38,13 +38,15 @@ async function doTailorProfile(req, resp) {
             let aadharResult = await cloudinary.uploader.upload(aadharUploadPath);
             aadharFrontUrl = aadharResult.secure_url;
 
-             let jsonAdhaarData= await genAi( aadharResult.secure_url);
-              console.log("******************************")
-              console.log(jsonAdhaarData)
-              console.log("******************************")
+            try {
+                let jsonAdhaarData = await genAi(aadharResult.secure_url);
+                console.log("Front Data:", jsonAdhaarData);
+            } catch (err) {
+                console.error("Error processing front Aadhar:", err.message);
+            }
         }
 
-        // ===== Aadhar Front Pic Upload =====
+        // ===== Aadhar Back Pic Upload =====
         if (req.files.aadharBack) {
             let aadharFileName = req.files.aadharBack.name;
             let aadharUploadPath = path.join(__dirname, "..", "uploads", aadharFileName);
@@ -52,6 +54,13 @@ async function doTailorProfile(req, resp) {
             await req.files.aadharBack.mv(aadharUploadPath);
             let aadharResult = await cloudinary.uploader.upload(aadharUploadPath);
             aadharBackUrl = aadharResult.secure_url;
+
+            try {
+                let jsonAdhaarData1 = await genAi(aadharResult.secure_url);
+                console.log("Back Data:", jsonAdhaarData1);
+            } catch (err) {
+                console.error("Error processing back Aadhar:", err.message);
+            }
         }
 
         // Save URLs in body
@@ -126,9 +135,9 @@ async function doUpdateTailor(req, resp) {
 
 
             // Save URLs in body
-        req.body.profilepic = profilePicUrl;
-        req.body.aadharFront = aadharFrontUrl;
-        req.body.aadharBack = aadharBackUrl;
+            req.body.profilepic = profilePicUrl;
+            req.body.aadharFront = aadharFrontUrl;
+            req.body.aadharBack = aadharBackUrl;
         }
 
         await UserColRef.updateOne(
@@ -272,5 +281,45 @@ async function doFetchTailorData(req, res) {
     }
 }
 
+// ===================== Extract Aadhaar Data =====================
+async function extractAadhar(req, resp) {
+    try {
+        if (!req.files || !req.files.file) {
+            return resp.status(400).json({ status: false, msg: "No file uploaded" });
+        }
 
-module.exports = { doTailorProfile, doUpdateTailor, doFindTailor, doFindTailorByMobile, doFetchCity, doFetchCategoryDress, doFetchTailorData }
+        const file = req.files.file;
+        const uploadPath = path.join(__dirname, "..", "uploads", file.name);
+        await file.mv(uploadPath);
+
+        const uploadResult = await cloudinary.uploader.upload(uploadPath);
+        const genAiResult = await safeGenAi(uploadResult.secure_url);
+
+
+        const side = req.query.side || req.body.side;  // <-- read from query OR body
+        if (!side) {
+            return resp.status(400).json({ status: false, msg: "Side parameter missing" });
+        }
+
+        if (side === "aadharFront") {
+            return resp.json({
+                name: genAiResult.name || "",
+                dob: genAiResult.dob || "",
+                aadharno: genAiResult.aadharno || "",
+            });
+        } else if (side === "aadharBack") {
+            return resp.json({
+                address: genAiResult.address || "",
+                city: genAiResult.city || "",
+            });
+        } else {
+            return resp.status(400).json({ status: false, msg: "Invalid side parameter" });
+        }
+
+    } catch (err) {
+        console.error("Aadhaar extraction error:", err);
+        resp.status(200).json({ status: false, msg: err.message });
+    }
+}
+
+module.exports = { doTailorProfile, doUpdateTailor, doFindTailor, doFindTailorByMobile, doFetchCity, doFetchCategoryDress, doFetchTailorData, extractAadhar }

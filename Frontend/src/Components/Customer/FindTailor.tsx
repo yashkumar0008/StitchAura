@@ -18,7 +18,7 @@ export default function FindTailor() {
 
     async function fetchTailors(pageNumber = 1) {
         
-        const res = await axios.post("https://stitch-aura.vercel.app/tailor/tailor-data", {
+        const res = await axios.post("http://localhost:2007/tailor/tailor-data", {
                 city,
                 category,
                 dress,

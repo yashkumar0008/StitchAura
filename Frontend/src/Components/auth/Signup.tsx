@@ -49,19 +49,30 @@ export default function Signup() {
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!validate()) return;
+  e.preventDefault();
+  if (!validate()) return;
 
-    try {
-      let url = "https://stitch-aura.vercel.app/user/signupaxios";
+  try {
+    let url = "http://localhost:2007/user/signup";
 
-      let response = await axios.post(url, form, { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
-      alert(response.data.msg)
+    let response = await axios.post(url, form, {
+      headers: { "Content-Type": "application/json" }, // 👈 better
+    });
+
+    if (response.data.status) {
+      alert(response.data.msg); // optional but useful
+
+      // 👉 redirect to OTP page
+      navigate("/verify-otp", { state: { email: form.emailid } });
+
+    } else {
+      alert(response.data.msg);
     }
-    catch (err: any) {
-      alert(err.response.data.msg);
-    }
-  };
+
+  } catch (err: any) {
+    alert(err.response?.data?.msg || "Signup failed");
+  }
+};
 
 
     function doNavigate(url:string)
