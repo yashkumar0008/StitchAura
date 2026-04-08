@@ -12,7 +12,7 @@ const navigate = useNavigate();
 
         {/* Logo */}
         <h1 className="text-2xl font-bold text-white tracking-wide">
-          Tailor<span className="text-purple-500">Hub</span>
+          Stitch<span className="text-purple-500">Aura</span>
         </h1>
 
         {/* Menu */}
