@@ -1,4 +1,7 @@
+import {useNavigate} from "react-router-dom"
+
 export default function HomePage() {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-black to-slate-800 text-white">
 
@@ -13,6 +16,17 @@ export default function HomePage() {
           A modern platform where customers can discover skilled tailors nearby 
           and tailors can grow their business by connecting with the right audience.
         </p>
+
+        {/* CTA Buttons */}
+        <div className="mt-8 flex-col sm:flex-row gap-4 ">
+          <button onClick={()=>{navigate("/signup")}} className="m-4 px-6 py-3 border border-yellow-500 text-yellow-500 rounded-xl font-semibold hover:bg-yellow-400 transition duration-300 shadow-lg cursor-pointer" >
+            Find Tailors
+          </button>
+
+          <button onClick={()=>{navigate("/signup")}} className="px-6 py-3 border border-yellow-500 text-yellow-500 rounded-xl font-semibold hover:bg-yellow-500 hover:text-black transition duration-300 cursor-pointer">
+            Join Now
+          </button>
+        </div>
       </section>
 
       {/* Section 1 */}
@@ -92,6 +106,26 @@ export default function HomePage() {
           </p>
         </div>
       </section>
+
+      <section className="px-6 py-20 text-center max-w-5xl mx-auto">
+
+      {/* Profile */}
+        <div className="flex flex-col items-center mb-6">
+          <div className="w-50 h-50 rounded-full overflow-hidden border-4 border-yellow-500 shadow-lg shadow-yellow-500/30 hover:scale-105 transition duration-500">
+            <img 
+              src="https://res.cloudinary.com/dnuxsfoop/image/upload/v1775726714/IMG-20250728-WA0004_kbrakb.jpg" 
+              alt="Image"
+              className="w-full h-full object-cover"
+            />
+          </div>
+
+          <p className="mt-4 text-xl text-slate-400">
+            Developed by <span className="text-yellow-500 font-semibold">Yash Kumar</span> <br />
+            BCA Student, Sri Guru Gobind Singh College, Sector-26, Chandigarh
+           <p> Contact - 7988077133 | Gmail - yashdahiya0008@gmail.com </p>
+          </p>
+        </div>
+        </section>
 
     </div>
   );

@@ -8,6 +8,9 @@ import Navbar from "./Components/Navbar/Navbar";
 import Login from "./Components/auth/Login";
 import Signup from "./Components/auth/Signup";
 import VerifyOtp from "./Components/auth/VerifyOtp";
+import ForgotPassword from "./Components/auth/ForgetPwd";
+import ResetPwdOtp from "./Components/auth/resetPwdOtp";
+import ResetPassword from "./Components/auth/resetPwdPage";
 
 {/*  Customer  */ }
 import CustomerDashboard from "./Components/Customer/Dashboard_customer";
@@ -31,32 +34,35 @@ function App() {
     <>
       <Routes>
 
-      {/* 🌐 PUBLIC ROUTES (Navbarmain) */}
-      <Route element={<Navbarmain />}>
-        <Route path="/" element={<HomePage />} />
-      </Route>
+        {/* 🌐 PUBLIC ROUTES (Navbarmain) */}
+        <Route element={<Navbarmain />}>
+          <Route path="/" element={<HomePage />} />
+        </Route>
 
-      {/* 🔐 AUTH + APP ROUTES (Navbar) */}
-      <Route element={<Navbar />}>
+        {/* 🔐 AUTH + APP ROUTES (Navbar) */}
+        <Route element={<Navbar />}>
 
-        {/* Auth */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/verify-otp" element={<VerifyOtp />} />
+          {/* Auth */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/verify-otp" element={<VerifyOtp />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-pwd-otp" element={<ResetPwdOtp />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
-        {/* Customer */}
-        <Route path="/customer-dashboard" element={<CustomerDashboard />} />
-        <Route path="/customer-profile" element={<CustomerProfile />} />
-        <Route path="/customer-find-tailor" element={<FindTailor />} />
-        <Route path="/customer-rating" element={<RateAndReview />} />
+          {/* Customer */}
+          <Route path="/customer-dashboard" element={<CustomerDashboard />} />
+          <Route path="/customer-profile" element={<CustomerProfile />} />
+          <Route path="/customer-find-tailor" element={<FindTailor />} />
+          <Route path="/customer-rating" element={<RateAndReview />} />
 
-        {/* Tailor */}
-        <Route path="/tailor-dashboard" element={<TailorDashboard />} />
-        <Route path="/tailor-profile" element={<TailorProfile />} />
+          {/* Tailor */}
+          <Route path="/tailor-dashboard" element={<TailorDashboard />} />
+          <Route path="/tailor-profile" element={<TailorProfile />} />
 
-      </Route>
+        </Route>
 
-    </Routes>
+      </Routes>
 
 
       {/* <Navbarmain /> */}

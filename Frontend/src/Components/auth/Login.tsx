@@ -51,7 +51,7 @@ export default function Login() {
 
     } catch (err: any) {
       setError(err.response?.data?.msg || "Login Failed");
-    }finally{
+    } finally {
       setLoading(false);
     }
   };
@@ -65,7 +65,7 @@ export default function Login() {
     <main className="min-h-screen flex items-center justify-center 
 bg-linear-to-br from-slate-900 via-black to-slate-800 px-4">
 
-  <Loader show={loading} text="Logging in..." />
+      <Loader show={loading} text="Logging in..." />
 
       <form
         onSubmit={handleLogin}
@@ -104,7 +104,10 @@ bg-linear-to-br from-slate-900 via-black to-slate-800 px-4">
         <div className="mt-4">
           <div className="flex justify-between">
             <p className="mb-1 text-sm font-medium text-slate-300">Password</p>
-            <span className="text-xs text-slate-400 cursor-pointer hover:text-yellow-500 transition">
+            <span
+              onClick={() => doNavigate("forgot-password")}
+              className="text-xs text-slate-400 cursor-pointer hover:text-yellow-500 transition"
+            >
               Forgot?
             </span>
           </div>
