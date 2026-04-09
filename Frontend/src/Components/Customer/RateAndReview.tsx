@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { FaStar } from "react-icons/fa";
+import Loader from "../Common/Spinner";
 
 interface ReviewState {
     mobile: string;
@@ -19,6 +20,7 @@ export default function RateAndReview() {
     const [tailorName, setTailorName] = useState("");
     const [loading, setLoading] = useState(false);
     const [hover, setHover] = useState(0);
+    const [submitLoading, setSubmitLoading] = useState(false);
 
     // Universal change handler (object theme)
     function handleChange(
@@ -38,10 +40,12 @@ export default function RateAndReview() {
         try {
             setLoading(true);
 
+            let token = localStorage.getItem("token");
+
             const resp = await axios.post(
-                "https://stitch-aura.vercel.app/tailor/findtailorbymobile",
-                { mobile: form.mobile }
-            );
+                "http://localhost:2007/tailor/findtailorbymobile",
+                { mobile: form.mobile },
+                { headers: { 'authorization': `Bearer ${token}` } });
 
             if (resp.data.status) {
                 setTailorName(resp.data.doc.name);
@@ -73,19 +77,28 @@ export default function RateAndReview() {
             return;
         }
 
-        const resp = await axios.post(
-            "https://stitch-aura.vercel.app/review/addreview",
-            form
-        );
+        try {
+            setSubmitLoading(true);
 
-        alert(resp.data.msg);
+            const resp = await axios.post(
+                "http://localhost:2007/review/addreview",
+                form
+            );
 
-        setForm(INITIAL_STATE);
-        setTailorName("");
+            alert(resp.data.msg);
+
+            setForm(INITIAL_STATE);
+            setTailorName("");
+        } catch (error) {
+            alert("Error submitting review");
+        } finally {
+            setSubmitLoading(false);
+        }
     }
 
     return (
         <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex justify-center items-center p-6">
+                <Loader show={submitLoading} text="Submitting Review..." />
             <form
                 onSubmit={handleSubmit}
                 className="w-full max-w-2xl bg-slate-900/70 backdrop-blur-xl border border-slate-800 shadow-2xl shadow-black/40 rounded-3xl p-10"

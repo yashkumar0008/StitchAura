@@ -2,12 +2,14 @@ import { useState } from "react";
 import axios from "axios";
 import CityCombo from "../Customer/ShowCityComponent";
 import CategoryDress from "../Customer/CategoryDressFilter";
+import Loader from "../Common/Spinner";
 
 export default function FindTailor() {
 
     const [city, setCity] = useState("");
     const [category, setCategory] = useState("");
     const [dress, setDress] = useState("");
+    const [loading, setLoading] = useState(false);
 
     const [tailors, setTailors] = useState<any[]>([]);
     const [page, setPage] = useState(1);
@@ -17,27 +19,36 @@ export default function FindTailor() {
     const limit = 6;
 
     async function fetchTailors(pageNumber = 1) {
+
+        try {
+            setLoading(true);
+
+        let token = localStorage.getItem("token");
         
-        const res = await axios.post("https://stitch-aura.vercel.app/tailor/tailor-data", {
+        const res = await axios.post("http://localhost:2007/tailor/tailor-data", {
                 city,
                 category,
                 dress,
                 page: pageNumber,
-                limit,
-                
-            
-        });
+                limit}, {headers: {'authorization': `Bearer ${token}`} });
 
         setTailors(res.data.data);
 
         setTotalPages(Math.ceil(res.data.total / limit));
 
         setPage(pageNumber);
+        } catch (error) {
+            alert("Error fetching tailors");
+        }finally{
+            setLoading(false);
+        }
     }
 
     return (
         <>
             <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex flex-col lg:flex-row p-4 lg:p-6 gap-6">
+
+                <Loader show={loading} text="Finding Tailors..." />
 
                 {/* LEFT SIDE FILTER */}
                 <div className="w-full lg:w-80 bg-slate-900/70 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 shadow-2xl">

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom';
+import Loader from "../Common/Spinner";
 
 interface LoginFormState {
   emailid: string;
@@ -16,6 +17,7 @@ export default function Login() {
   const [form, setForm] = useState<LoginFormState>(INITIAL_STATE);
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -28,7 +30,8 @@ export default function Login() {
     e.preventDefault();
 
     try {
-      let url = "https://stitch-aura.vercel.app/user/login";
+      setLoading(true);
+      let url = "http://localhost:2007/user/login";
 
       let response = await axios.post(url, form, { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
 
@@ -48,6 +51,8 @@ export default function Login() {
 
     } catch (err: any) {
       setError(err.response?.data?.msg || "Login Failed");
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -59,6 +64,8 @@ export default function Login() {
   return (
     <main className="min-h-screen flex items-center justify-center 
 bg-linear-to-br from-slate-900 via-black to-slate-800 px-4">
+
+  <Loader show={loading} text="Logging in..." />
 
       <form
         onSubmit={handleLogin}

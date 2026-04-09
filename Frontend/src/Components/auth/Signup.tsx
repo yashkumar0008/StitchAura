@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate ,Outlet} from 'react-router-dom'
+import Loader from "../Common/Spinner";
 
 
 interface SignupFormState {
@@ -19,6 +20,7 @@ export default function Signup() {
   const [form, setForm] = useState<SignupFormState>(INITIAL_STATE);
   const [errors, setErrors] = useState<Partial<SignupFormState>>({});
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -53,16 +55,16 @@ export default function Signup() {
   if (!validate()) return;
 
   try {
-    let url = "https://stitch-aura.vercel.app/user/signup";
+    setLoading(true);
+    let url = "http://localhost:2007/user/signup";
 
     let response = await axios.post(url, form, {
-      headers: { "Content-Type": "application/json" }, // 👈 better
+      headers: { "Content-Type": "application/json" }, 
     });
 
     if (response.data.status) {
-      alert(response.data.msg); // optional but useful
+      alert(response.data.msg); 
 
-      // 👉 redirect to OTP page
       navigate("/verify-otp", { state: { email: form.emailid } });
 
     } else {
@@ -71,6 +73,8 @@ export default function Signup() {
 
   } catch (err: any) {
     alert(err.response?.data?.msg || "Signup failed");
+  }finally {
+    setLoading(false);
   }
 };
 
@@ -85,6 +89,7 @@ export default function Signup() {
   return (
     <>
     <main className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-black to-slate-800 px-4">
+       <Loader show={loading} text="Signup..." />
       <form
         onSubmit={handleSubmit}
         className="w-full max-w-md rounded-2xl bg-slate-900/70 backdrop-blur-xl 

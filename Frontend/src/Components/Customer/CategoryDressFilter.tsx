@@ -17,10 +17,10 @@ export default function ShowCategoryDress({ onSelectDress }: ShowCategoryDressPr
             if (!category) return;
 
             try {
+                let token = localStorage.getItem("token");
                 const res = await axios.get(
-                    "https://stitch-aura.vercel.app/tailor/category-dress",
-                    { params: { category } }
-                );
+                    "http://localhost:2007/tailor/category-dress",
+                    { params: { category }, headers: { 'authorization': `Bearer ${token}` } });
 
                 setSpecialities(res.data);
                 setSelectedDress(""); // reset dress

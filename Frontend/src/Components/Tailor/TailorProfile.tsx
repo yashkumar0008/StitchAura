@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Loader from "../Common/Spinner";
 
 interface TailorProfileState {
     emailid: string;
@@ -49,7 +50,8 @@ export default function ProfileTailor() {
     const [aadharFrontPrev, setAadharFrontPrev] = useState<string | null>(null);
     const [aadharBackPrev, setAadharBackPrev] = useState<string | null>(null);
     const [isExisting, setIsExisting] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [loadingAadhar, setLoadingAadhar] = useState(false);
+    const [loadingSubmit, setLoadingSubmit] = useState(false);
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
         const { name, value } = e.target;
@@ -73,11 +75,12 @@ export default function ProfileTailor() {
             formData.append("file", file);
 
             try {
-                 setLoading(true);
+                setLoadingAadhar(true);
+                let token = localStorage.getItem("token");
                 const response = await axios.post(
-                    `https://stitch-aura.vercel.app/tailor/extractAadhar?side=${field}`,
+                    `http://localhost:2007/tailor/extractAadhar?side=${field}`,
                     formData,
-                    { headers: { "Content-Type": "multipart/form-data" } }
+                    { headers: { "Content-Type": "multipart/form-data", 'authorization': `Bearer ${token}` } }
                 );
 
                 // Fill form fields
@@ -85,8 +88,8 @@ export default function ProfileTailor() {
             } catch (err) {
                 console.error("Aadhaar extraction failed:", err);
             } finally {
-            setLoading(false);
-        }
+                setLoadingAadhar(false);
+            }
         }
 
     }
@@ -96,45 +99,55 @@ export default function ProfileTailor() {
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
 
-        let url = isExisting ? "https://stitch-aura.vercel.app/tailor/updatetailoraxios" : "https://stitch-aura.vercel.app/tailor/profileaxios";
+        try {
+            setLoadingSubmit(true);
 
-        let formData = new FormData();
+            let url = isExisting ? "http://localhost:2007/tailor/updatetailoraxios" : "http://localhost:2007/tailor/profileaxios";
 
-        formData.append("emailid", form.emailid);
-        formData.append("name", form.name);
-        formData.append("contact", form.contact);
-        formData.append("address", form.address);
-        formData.append("city", form.city);
-        formData.append("dob", form.dob);
-        formData.append("aadharno", form.aadharno);
-        formData.append("category", form.category);
-        formData.append("speciality", form.speciality);
-        formData.append("social", form.social);
-        formData.append("since", form.since);
-        formData.append("worktype", form.worktype);
-        formData.append("shopaddress", form.shopaddress);
-        formData.append("shopcity", form.shopcity);
-        formData.append("otherinfo", form.otherinfo);
+            let formData = new FormData();
 
-        if (form.profilepic) {
-            formData.append("profilepic", form.profilepic);
-        }
+            formData.append("emailid", form.emailid);
+            formData.append("name", form.name);
+            formData.append("contact", form.contact);
+            formData.append("address", form.address);
+            formData.append("city", form.city);
+            formData.append("dob", form.dob);
+            formData.append("aadharno", form.aadharno);
+            formData.append("category", form.category);
+            formData.append("speciality", form.speciality);
+            formData.append("social", form.social);
+            formData.append("since", form.since);
+            formData.append("worktype", form.worktype);
+            formData.append("shopaddress", form.shopaddress);
+            formData.append("shopcity", form.shopcity);
+            formData.append("otherinfo", form.otherinfo);
 
-        if (form.aadharFront) {
-            formData.append("aadharFront", form.aadharFront);
-        }
+            if (form.profilepic) {
+                formData.append("profilepic", form.profilepic);
+            }
+
+            if (form.aadharFront) {
+                formData.append("aadharFront", form.aadharFront);
+            }
 
 
-        if (form.aadharBack) {
-            formData.append("aadharBack", form.aadharBack);
-        }
+            if (form.aadharBack) {
+                formData.append("aadharBack", form.aadharBack);
+            }
 
-        let response = await axios.post(url, formData, { headers: { "Content-Type": "multipart/form-data" } });
+            let token = localStorage.getItem("token");
 
-        alert(response.data.msg);
+            let response = await axios.post(url, formData, { headers: { "Content-Type": "multipart/form-data", 'authorization': `Bearer ${token}` } });
 
-        if (!isExisting) {
-            setIsExisting(true);
+            alert(response.data.msg);
+
+            if (!isExisting) {
+                setIsExisting(true);
+            }
+        } catch (error: any) {
+            alert("Error submitting profile: " + (error.response?.data?.msg || error.message));
+        }finally{
+            setLoadingSubmit(false);
         }
     }
 
@@ -150,9 +163,11 @@ export default function ProfileTailor() {
 
     async function autoFindTailor() {
         try {
-            let url = "https://stitch-aura.vercel.app/tailor/findtailoraxios";
+            let url = "http://localhost:2007/tailor/findtailoraxios";
 
-            let resp = await axios.post(url, { emailid: form.emailid }, { headers: { "Content-Type": "application/x-www-form-urlencoded" } });
+            let token = localStorage.getItem("token");
+
+            let resp = await axios.post(url, { emailid: form.emailid }, { headers: { "Content-Type": "application/x-www-form-urlencoded", 'authorization': `Bearer ${token}` } });
 
             console.log(resp.data)
             if (resp.data.status) {
@@ -196,6 +211,11 @@ export default function ProfileTailor() {
 
     return (
         <main className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex justify-center items-center p-6">
+
+            <Loader show={loadingAadhar} text="Extracting Aadhaar Data..." />
+
+            <Loader show={loadingSubmit} text="Saving Profile..." />
+
             <form
                 onSubmit={handleSubmit}
                 className="w-full max-w-6xl bg-slate-900/70 backdrop-blur-xl border border-slate-800 shadow-2xl shadow-black/40 rounded-3xl p-10"
@@ -205,12 +225,7 @@ export default function ProfileTailor() {
                     Profile Tailor
                 </h2>
 
-                {loading && (
-                    <div className="fixed inset-0 bg-black/60 flex flex-col justify-center items-center z-50">
-                        <div className="w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full animate-spin"></div>
-                        <p className="text-white mt-4 text-lg">Extracting Aadhaar Data...</p>
-                    </div>
-                )}
+
 
                 <div className="grid md:grid-cols-3 gap-6 mb-8">
 

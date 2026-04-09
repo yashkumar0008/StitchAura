@@ -16,7 +16,7 @@ const navigate = useNavigate();
         </h1>
 
         {/* Menu */}
-        <div className="flex items-center gap-8 text-gray-300">
+        <div className="flex items-center gap-4 text-gray-300">
 
           {/* Buttons */}
           <button

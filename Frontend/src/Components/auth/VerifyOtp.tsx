@@ -1,10 +1,12 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Loader from "../Common/Spinner";
 
 export default function VerifyOtp() {
   const location = useLocation();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const email = location.state?.email;
 
@@ -18,7 +20,8 @@ export default function VerifyOtp() {
 
   const handleVerify = async () => {
     try {
-      let res = await axios.post("https://stitch-aura.vercel.app/user/verify-otp", {
+      setLoading(true);
+      let res = await axios.post("http://localhost:2007/user/verify-otp", {
         emailid: email,
         otp: otp,
       });
@@ -30,11 +33,14 @@ export default function VerifyOtp() {
       }
     } catch (err: any) {
       alert(err.response?.data?.msg || "Error verifying OTP");
+    }finally{
+      setLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black text-white">
+      <Loader show={loading} text="Verifying OTP..." />
       <div className="bg-slate-900 p-8 rounded-xl w-80">
         <h2 className="text-xl mb-4 text-center">Verify OTP</h2>
 

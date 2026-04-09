@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Loader from "../Common/Spinner";
 
 interface CustomerProfileState {
     emailid: string;
@@ -25,6 +26,7 @@ export default function CustomerProfile() {
     const [form, setForm] = useState<CustomerProfileState>(INITIAL_STATES);
     const [prev, setPrev] = useState<string | null>(null);
     const [isExisting, setIsExisting] = useState(false);
+    const [loading, setLoading] = useState(false);
 
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
@@ -61,10 +63,11 @@ export default function CustomerProfile() {
             return;
         }
 
-
+        try{
+            setLoading(true);
         let url = isExisting
-            ? "https://stitch-aura.vercel.app/customer/updatecustomeraxios"
-            : "https://stitch-aura.vercel.app/customer/profileaxios";
+            ? "http://localhost:2007/customer/updatecustomeraxios"
+            : "http://localhost:2007/customer/profileaxios";
 
 
 
@@ -92,6 +95,11 @@ export default function CustomerProfile() {
         if (!isExisting) {
             setIsExisting(true);
         }
+    } catch (err) {
+        alert("An error occurred while saving the profile. Please try again.");
+    } finally {
+        setLoading(false);
+    }
     };
 
     useEffect(() => {
@@ -106,7 +114,7 @@ export default function CustomerProfile() {
 
     async function autoFindCustomer() {
         try {
-            let url = "https://stitch-aura.vercel.app/customer/findcustomeraxios";
+            let url = "http://localhost:2007/customer/findcustomeraxios";
 
             let token = localStorage.getItem("token");
             let resp = await axios.post(
@@ -141,6 +149,8 @@ export default function CustomerProfile() {
     return (
         <main className="min-h-screen flex items-center justify-center 
 bg-gradient-to-br from-[#0f172a] via-[#111827] to-[#0b1120] px-4 py-10">
+
+    <Loader show={loading} text="Saving Profile..." />
 
             <form
                 onSubmit={handleSubmit}

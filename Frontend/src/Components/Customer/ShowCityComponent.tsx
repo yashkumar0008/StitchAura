@@ -11,8 +11,15 @@ export default function ShowCity({ value, onChange }: ShowCityProps) {
 
   useEffect(() => {
     async function fetchCities() {
+
+      let token = localStorage.getItem("token");
+
       const res = await axios.post(
-        "https://stitch-aura.vercel.app/tailor/distinct-city"
+        "http://localhost:2007/tailor/distinct-city",
+        {},
+        {
+          headers: { 'authorization': `Bearer ${token}` }
+        }
       );
       setCities(res.data);
     }
