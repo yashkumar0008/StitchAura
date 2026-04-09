@@ -15,7 +15,7 @@ export default function ShowCity({ value, onChange }: ShowCityProps) {
       let token = localStorage.getItem("token");
 
       const res = await axios.post(
-        "http://localhost:2007/tailor/distinct-city",
+        "https://stitch-aura.vercel.app/tailor/distinct-city",
         {},
         {
           headers: { 'authorization': `Bearer ${token}` }

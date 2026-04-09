@@ -43,7 +43,7 @@ export default function RateAndReview() {
             let token = localStorage.getItem("token");
 
             const resp = await axios.post(
-                "http://localhost:2007/tailor/findtailorbymobile",
+                "https://stitch-aura.vercel.app/tailor/findtailorbymobile",
                 { mobile: form.mobile },
                 { headers: { 'authorization': `Bearer ${token}` } });
 
@@ -81,7 +81,7 @@ export default function RateAndReview() {
             setSubmitLoading(true);
 
             const resp = await axios.post(
-                "http://localhost:2007/review/addreview",
+                "https://stitch-aura.vercel.app/review/addreview",
                 form
             );
 
