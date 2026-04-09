@@ -7,7 +7,7 @@ import Navbar from "./Components/Navbar/Navbar";
 {/*  Auth  */ }
 import Login from "./Components/auth/Login";
 import Signup from "./Components/auth/Signup";
-import VerifyOtp from "./Components/auth/VderifyOtp";
+import VerifyOtp from "./Components/auth/VerifyOtp";
 
 {/*  Customer  */ }
 import CustomerDashboard from "./Components/Customer/Dashboard_customer";
