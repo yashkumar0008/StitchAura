@@ -17,7 +17,7 @@ export default function ResetPassword() {
 
       const email = localStorage.getItem("resetEmail");
 
-      await axios.post("http://localhost:2007/user/reset-password", {
+      await axios.post("https://stitch-aura.vercel.app/user/reset-password", {
         emailid: email,
         pwd: password,
       });

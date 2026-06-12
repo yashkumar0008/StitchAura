@@ -17,7 +17,7 @@ export default function VerifyOtp() {
 
       const email = localStorage.getItem("resetEmail");
 
-      await axios.post("http://localhost:2007/user/verify-reset-otp", {
+      await axios.post("https://stitch-aura.vercel.app/user/verify-reset-otp", {
         emailid: email,
         otp,
       });

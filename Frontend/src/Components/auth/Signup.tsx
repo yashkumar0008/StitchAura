@@ -56,7 +56,7 @@ export default function Signup() {
 
   try {
     setLoading(true);
-    let url = "http://localhost:2007/user/signup";
+    let url = "https://stitch-aura.vercel.app/user/signup";
 
     let response = await axios.post(url, form, {
       headers: { "Content-Type": "application/json" }, 
