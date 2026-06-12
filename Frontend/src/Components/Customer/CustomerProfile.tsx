@@ -66,8 +66,8 @@ export default function CustomerProfile() {
         try{
             setLoading(true);
         let url = isExisting
-            ? "https://stitch-aura.vercel.app/customer/updatecustomeraxios"
-            : "https://stitch-aura.vercel.app/customer/profileaxios";
+            ? "http://localhost:2007/customer/updatecustomeraxios"
+            : "http://localhost:2007/customer/profileaxios";
 
 
 
@@ -114,7 +114,7 @@ export default function CustomerProfile() {
 
     async function autoFindCustomer() {
         try {
-            let url = "https://stitch-aura.vercel.app/customer/findcustomeraxios";
+            let url = "http://localhost:2007/customer/findcustomeraxios";
 
             let token = localStorage.getItem("token");
             let resp = await axios.post(

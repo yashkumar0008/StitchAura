@@ -15,7 +15,7 @@ export default function ForgotPassword() {
   try {
     setLoading(true);
 
-    let response = await axios.post("https://stitch-aura.vercel.app/user/send-otp-reset", {
+    let response = await axios.post("http://localhost:2007/user/send-otp-reset", {
       emailid: email,
     });
     

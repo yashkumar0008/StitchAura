@@ -78,9 +78,9 @@ export default function ProfileTailor() {
                 setLoadingAadhar(true);
                 let token = localStorage.getItem("token");
                 const response = await axios.post(
-                    `https://stitch-aura.vercel.app/tailor/extractAadhar?side=${field}`,
+                    `http://localhost:2007/tailor/extractAadhar?side=${field}`,
                     formData,
-                    { headers: { "Content-Type": "multipart/form-data", 'authorization': `Bearer ${token}` } }
+                    { headers: { "Content-Type": "multipart/form-data", 'authorization': `Bearer ${token}` },timeout: 25000  }
                 );
 
                 // Fill form fields
@@ -102,7 +102,7 @@ export default function ProfileTailor() {
         try {
             setLoadingSubmit(true);
 
-            let url = isExisting ? "https://stitch-aura.vercel.app/tailor/updatetailoraxios" : "https://stitch-aura.vercel.app/tailor/profileaxios";
+            let url = isExisting ? "http://localhost:2007/tailor/updatetailoraxios" : "http://localhost:2007/tailor/profileaxios";
 
             let formData = new FormData();
 
@@ -163,7 +163,7 @@ export default function ProfileTailor() {
 
     async function autoFindTailor() {
         try {
-            let url = "https://stitch-aura.vercel.app/tailor/findtailoraxios";
+            let url = "http://localhost:2007/tailor/findtailoraxios";
 
             let token = localStorage.getItem("token");
 
