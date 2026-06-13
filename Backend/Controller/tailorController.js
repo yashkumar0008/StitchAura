@@ -22,7 +22,7 @@ async function doTailorProfile(req, resp) {
         // ===== Profile Pic Upload =====
         if (req.files.profilepic) {
             let profileFileName = req.files.profilepic.name;
-            let profileUploadPath = path.join(__dirname, "..", "uploads", profileFileName);
+            let profileUploadPath = path.join("/tmp", profileFileName);
 
             await req.files.profilepic.mv(profileUploadPath);
             let profileResult = await cloudinary.uploader.upload(profileUploadPath);
@@ -32,7 +32,7 @@ async function doTailorProfile(req, resp) {
         // ===== Aadhar Front Pic Upload =====
         if (req.files.aadharFront) {
             let aadharFileName = req.files.aadharFront.name;
-            let aadharUploadPath = path.join(__dirname, "..", "uploads", aadharFileName);
+            let aadharUploadPath = path.join("/tmp", aadharFileName);
 
             await req.files.aadharFront.mv(aadharUploadPath);
             let aadharResult = await cloudinary.uploader.upload(aadharUploadPath);
@@ -49,7 +49,7 @@ async function doTailorProfile(req, resp) {
         // ===== Aadhar Back Pic Upload =====
         if (req.files.aadharBack) {
             let aadharFileName = req.files.aadharBack.name;
-            let aadharUploadPath = path.join(__dirname, "..", "uploads", aadharFileName);
+            let aadharUploadPath = path.join("/tmp", aadharFileName);
 
             await req.files.aadharBack.mv(aadharUploadPath);
             let aadharResult = await cloudinary.uploader.upload(aadharUploadPath);
@@ -100,7 +100,7 @@ async function doUpdateTailor(req, resp) {
             // ===== Profile Pic Upload =====
             if (req.files.profilepic) {
                 let profileFileName = req.files.profilepic.name;
-                let profileUploadPath = path.join(__dirname, "..", "uploads", profileFileName);
+                let profileUploadPath = path.join("/tmp", profileFileName);
 
                 await req.files.profilepic.mv(profileUploadPath);
                 let profileResult = await cloudinary.uploader.upload(profileUploadPath);
@@ -112,7 +112,7 @@ async function doUpdateTailor(req, resp) {
             // ===== Aadhar Front Pic Upload =====
             if (req.files.aadharFront) {
                 let aadharFileName = req.files.aadharFront.name;
-                let aadharUploadPath = path.join(__dirname, "..", "uploads", aadharFileName);
+                let aadharUploadPath = path.join("/tmp", aadharFileName);
 
                 await req.files.aadharFront.mv(aadharUploadPath);
                 let aadharResult = await cloudinary.uploader.upload(aadharUploadPath);
@@ -124,7 +124,7 @@ async function doUpdateTailor(req, resp) {
             // ===== Aadhar Front Pic Upload =====
             if (req.files.aadharBack) {
                 let aadharFileName = req.files.aadharBack.name;
-                let aadharUploadPath = path.join(__dirname, "..", "uploads", aadharFileName);
+                let aadharUploadPath = path.join("/tmp", aadharFileName);
 
                 await req.files.aadharBack.mv(aadharUploadPath);
                 let aadharResult = await cloudinary.uploader.upload(aadharUploadPath);
