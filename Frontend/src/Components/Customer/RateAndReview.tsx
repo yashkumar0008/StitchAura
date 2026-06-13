@@ -80,9 +80,13 @@ export default function RateAndReview() {
         try {
             setSubmitLoading(true);
 
+             let token = localStorage.getItem("token");
+
             const resp = await axios.post(
                 "https://stitch-aura.vercel.app/review/addreview",
-                form
+                form ,
+                { headers: { authorization: `Bearer ${token}`}
+    }
             );
 
             alert(resp.data.msg);

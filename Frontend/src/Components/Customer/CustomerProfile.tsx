@@ -28,6 +28,21 @@ export default function CustomerProfile() {
     const [isExisting, setIsExisting] = useState(false);
     const [loading, setLoading] = useState(false);
 
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            try {
+                const payload = JSON.parse(atob(token.split(".")[1]));
+                const email = payload.emailid || payload.email || payload.sub || "";
+                if (email) {
+                    setForm((prev) => ({ ...prev, emailid: email }));
+                }
+            } catch (err) {
+                console.error("Failed to decode token:", err);
+            }
+        }
+    }, []);
+
 
     function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
         const { name, value } = e.target;
@@ -181,7 +196,7 @@ bg-gradient-to-br from-[#0f172a] via-[#111827] to-[#0b1120] px-4 py-10">
                             name="emailid"
                             value={form.emailid}
                             onChange={handleChange}
-                            required
+                            disabled
                             className="w-full rounded-xl bg-slate-800 border border-slate-600 
                     px-4 py-3 text-white placeholder-slate-400
                     focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 outline-none transition"
