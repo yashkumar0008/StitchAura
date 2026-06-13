@@ -15,7 +15,7 @@ async function doCustomerProfile(req, resp) {
 
     if (req.files != null) {
         fileName = req.files.profilepic.name;
-        let uploadFolderPath = path.join(__dirname,"..","uploads",fileName);
+        let uploadFolderPath = path.join("/tmp",fileName);
 
         await req.files.profilepic.mv(uploadFolderPath);
 
@@ -37,7 +37,7 @@ async function doUpdateCustomer(req,resp){
 try {
         if (req.files && req.files.profilepic) {
             let fileName = req.files.profilepic.name;
-            let uploadFolderPath = path.join(__dirname, "..", "uploads", fileName);
+            let uploadFolderPath = path.join("/tmp", fileName);
 
             await req.files.profilepic.mv(uploadFolderPath);
 
