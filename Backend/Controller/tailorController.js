@@ -289,7 +289,8 @@ async function extractAadhar(req, resp) {
         }
 
         const file = req.files.file;
-        const uploadPath = path.join(__dirname, "..", "uploads", file.name);
+        // const uploadPath = path.join(__dirname, "..", "uploads", file.name);
+        const uploadPath = path.join("/tmp", file.name);
         await file.mv(uploadPath);
 
         const uploadResult = await cloudinary.uploader.upload(uploadPath);
