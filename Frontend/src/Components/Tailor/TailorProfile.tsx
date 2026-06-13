@@ -53,6 +53,22 @@ export default function ProfileTailor() {
     const [loadingAadhar, setLoadingAadhar] = useState(false);
     const [loadingSubmit, setLoadingSubmit] = useState(false);
 
+
+     useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            try {
+                const payload = JSON.parse(atob(token.split(".")[1]));
+                const email = payload.emailid || payload.email || payload.sub || "";
+                if (email) {
+                    setForm((prev) => ({ ...prev, emailid: email }));
+                }
+            } catch (err) {
+                console.error("Failed to decode token:", err);
+            }
+        }
+    }, []);
+
     function handleChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
         const { name, value } = e.target;
         setForm((prev) => ({ ...prev, [name]: value }));
@@ -239,6 +255,7 @@ export default function ProfileTailor() {
                                 name="emailid"
                                 value={form.emailid}
                                 onChange={handleChange}
+                                disabled
                                 className="w-full rounded-xl bg-slate-800 border border-slate-700 px-4 py-3 mt-1 text-white placeholder-slate-400 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500/40 outline-none transition-all duration-300"
                             />
                         </div>
