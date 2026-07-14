@@ -227,17 +227,43 @@ async function doFetchCategoryDress(req, resp) {
 
     try {
         let query = {};
+
         if (category && category !== "All") {
             query.category = category;
         }
 
         const specialities = await UserColRef.distinct("speciality", query);
-        resp.json(specialities);
+
+        const allSpecialities = [...new Set(
+            specialities
+                .flatMap(item => item.split(","))
+                .map(item => item.trim())
+        )];
+
+        resp.json(allSpecialities);
+
     } catch (err) {
         console.error(err);
-        resp.status(200).json({ message: "Error fetching specialities" });
+        resp.status(500).json({ message: "Error fetching specialities" });
     }
 }
+
+// async function doFetchCategoryDress(req, resp) {
+//     const { category } = req.query;
+
+//     try {
+//         let query = {};
+//         if (category && category !== "All") {
+//             query.category = category;
+//         }
+
+//         const specialities = await UserColRef.distinct("speciality", query);
+//         resp.json(specialities);
+//     } catch (err) {
+//         console.error(err);
+//         resp.status(200).json({ message: "Error fetching specialities" });
+//     }
+// }
 
 // ===================== Fetch Tailor Data ============================
 
