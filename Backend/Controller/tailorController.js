@@ -285,7 +285,9 @@ async function doFetchTailorData(req, res) {
 
         // ✅ Filter by dress / speciality
         if (dress && dress !== "") {
-            query.speciality = dress;
+            query.speciality = {
+                $regex: new RegExp(`(^|,)\\s*${dress}\\s*(,|$)`, "i")
+            };
         }
 
         const skip = (parseInt(page) - 1) * parseInt(limit);
